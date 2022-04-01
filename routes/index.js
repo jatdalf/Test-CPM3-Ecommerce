@@ -1,6 +1,7 @@
 "use strict";
 
 var express = require("express");
+const model = require("../models/model");
 
 
 var router = express.Router();
@@ -22,7 +23,7 @@ router.post('/categories', (req,res)=>{
     try{
         res.status(201).json({msg:models.addCategory(category)})
     }catch (error){
-        res.status(404).json({ error: error})
+        res.status(400).json({ error: error})
     }
 })
 
@@ -45,4 +46,7 @@ router.get('/products/:categoryName',(req,res)=>{
     }catch(error){
         res.status(404).json({ error: error})
     }
+})
+router.get('/rating', (req,res)=>{
+    res.json(models.getRating())
 })
