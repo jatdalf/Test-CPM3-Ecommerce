@@ -109,8 +109,8 @@ module.exports = {
     }
   
     if(stars && text && user){
-      let productoCoincide = products.find(p => p.name === name)  
-      if(!productoCoincide) {
+      let producto = products.find(p => p.name === name)  
+      if(!producto) {
         throw 'Producto no encontrado'
       } else {
         if(stars < 1 || stars > 5){
@@ -123,14 +123,14 @@ module.exports = {
             user: user
           } 
         
-        productoCoincide.reviews.push(review)
+        producto.reviews.push(review)
         var suma = 0
-        for(var i = 0; i < productoCoincide.reviews.length; i++){
-          suma = suma + productoCoincide.reviews[i].stars
+        for(var i = 0; i < producto.reviews.length; i++){
+          suma = suma + producto.reviews[i].stars
         }
-        suma = suma / productoCoincide.reviews.length
+        suma = suma / producto.reviews.length
 
-        productoCoincide.rating = suma
+        producto.rating = suma
 
         return "Reseña agregada correctamente"
 
