@@ -21,12 +21,19 @@ module.exports = {
     // Agrega el nombre de una nueva categoría verificando que no exista anteriormente.
     // Debe retornar el string 'Categoría creada correctamente'.
     // En caso de existir, no se agrega y debe arrojar el Error 'La categoría ya existe' (ver JS throw Error)
-
+    
+    if(!categories.includes(category)){
+      categories.push(category)
+      return 'Categoría creada correctamente'
+    } else {
+        throw 'La categoría ya existe';
+    }
+    
   },
 
   listCategories: function () {
     // Devuelve un arreglo con todas las categorías
-
+    return categories;
   },
 
   addProduct: function (name, brand, category, stock) {
