@@ -105,14 +105,34 @@ module.exports = {
     // { stars: stars, text: text, user: user }
     // En caso de agregar correctamente, debe devolver el string "Reseña agregada correctamente".
     // Además debe actualizar el puntaje (rating) del producto, según el promedio de todas las reseñas obtenidas hasta el momento (stars).
-
+    let prodReview = products.find(p => p.name === name);
+    if(!prodReview){
+      throw 'Producto no encontrado';
+    } else {
+      if (stars&&text&&user){
+        if(stars>=1 && stars<=5){
+            prodReview.reviews.push({ stars: stars, text: text, user: user });
+            
+        }else{
+          throw 'Puntaje inválido';
+        }
+      }else {
+        throw 'Faltan parámetros';
+      }
+    }
   },
 
   getReviews: function (name) {
     // Devuelve las reseñas (reviews) de un producto en particular.
     // Si no existe el producto, arroja un Error 'Producto no encontrado.'
     // Si el producto existe pero no tiene reseñas, devuelve un arrego vacío.'
-
+    let producto = products.find(p => p.name===name);
+    if(!producto){
+      throw 'Producto no encontrado'
+    } else {
+      if(!producto.reviews.length) return producto.reviews
+      else return producto.reviews
+    }
   },
 
   getRating: function (name) {
@@ -120,6 +140,18 @@ module.exports = {
     // Si no existe el producto, arroja un Error 'Producto no encontrado'
     // Si no tiene reseñas, se espera que el rating sea 0.
     // Si no recibe parámetros (name) devuelve sólo el nombre de los 5 productos mejor puntuados, ordenados de mayor a menor puntaje.
+    let producto = products.find(p => p.name === name);
+    if(name){
+      if(!producto){
+        throw 'Producto no encontrado'
+      } else {
+        if(!producto.reviews.length) return producto.rating = 0;
+      }
+    }else {
+      let topFive = products.map(p=>p.rating);
+      let topFiveNew = topFive.sort().reverse().slice(0,5)
+      return topFiveNew;
+    }
 
   }
 
