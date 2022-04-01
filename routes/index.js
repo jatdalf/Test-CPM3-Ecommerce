@@ -47,6 +47,31 @@ router.get('/products/:categoryName',(req,res)=>{
         res.status(404).json({ error: error})
     }
 })
+
 router.get('/rating', (req,res)=>{
     res.json(models.getRating())
+})
+router.get('/rating/:product',(req,res)=>{
+    try{
+        res.json({rating: models.getRating(req.params.product)})
+    }catch(error){
+        res.status(404).json({ error: error})
+    }
+})
+
+router.get('/reviews', (req,res)=>{
+    try{
+        res.json(models.getReviews(req.query.name))
+    }catch(error){
+        res.status(404).json({error:error})
+    }
+})
+
+router.post('/reviews',(req,res)=>{
+    const {name, stars, text, user} = req.body;
+    try{
+        res.status(201).json({msg:models.addReview(name, stars, text, user)})
+    }catch(error){
+        res.status(400).json({error:error})
+    }
 })
