@@ -58,7 +58,6 @@ module.exports = {
       const obj = {
         name,
         brand,
-        category,
         stock,
         available: available,
         categoryId: id,
@@ -66,7 +65,7 @@ module.exports = {
         rating: 0,
       }
       products.push(obj);
-      return products;
+      return obj;
     }
     throw 'La categoría ingresada no existe'
   },
