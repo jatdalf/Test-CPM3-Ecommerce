@@ -4,6 +4,8 @@
 
 'use strict'
 
+const { match } = require("assert")
+
 let products = []
 let categories = []
 
@@ -46,6 +48,27 @@ module.exports = {
     // Su propiedad rating (puntaje) será inicialmente 0.
     // Si el producto es agregado con éxito debe retornar el producto creado.
 
+    if (categories.includes(category)){
+      const id = categories.indexOf(category) +1;
+      if (stock > 0){
+        var available = true;
+      }else {
+        var available = false;
+      }
+      const obj = {
+        name,
+        brand,
+        category,
+        stock,
+        available: available,
+        categoryId: id,
+        reviews: [],
+        rating: 0,
+      }
+      products.push(obj);
+      return products;
+    }
+    throw 'La categoría ingresada no existe'
   },
 
   listProducts: function (category, fullName) {
@@ -53,7 +76,23 @@ module.exports = {
     // Si recibe un nombre de categoría (category) como parámetro, debe filtrar sólo los productos pertenecientes a la misma.
     // Si la categoría no existe, arroja un Error 'La categoría no existe'
     // Si ADEMÁS de la categoría, también recibe un segundo parámetro (fullName) en 'true', debe devolver únicamente la denominación completa (Marca + Nombre) de los productos.
-
+    if(fullName){ //fullName === true
+      let index = categories.indexOf(category) + 1;
+      let productos = products?.filter((p) => p.categoryId === index); //[{producto}]
+      if (category && fullName) {
+        let productByName = productos.map((p) => p.brand + " " + p.name);
+        return productByName;
+      }
+    }else if(category){ //category === 'algo'
+        if (categories.includes(category)){
+        let idRandom = categories.indexOf(category) +1;
+        let filtrados = products.filter(p=> p.categoryId ===idRandom);
+        return filtrados;
+      } else {
+        throw 'La categoría no existe';
+      }
+    }  
+    return products;
   },
 
   addReview: function (name, stars, text, user) {
