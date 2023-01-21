@@ -7,15 +7,13 @@
 const { match } = require("assert")
 const { log } = require("console")
 
-let prodId = 1
 let products = []
 let categories = []
 
 const CreateProduct = (name, brand, categoryId, stock) =>{
   let available = false
   if(stock>0) available=true
-  const NewProduct = {
-    prodId: prodId++,
+  const NewProduct = {    
     name,
     brand,
     categoryId,
@@ -28,7 +26,29 @@ const CreateProduct = (name, brand, categoryId, stock) =>{
   return NewProduct
 }
 
+// const userForTest =[{
+//   nombre: "Hector",
+//   apellido: "Marion",
+//   estudios: [{
+//     carrera: "Asc" ,
+//     años: 4
+//     },{
+//     carrera: "ing",
+//     años: 2
+//     }]
+// }]
+// let cant = (userForTest[0].estudios.length);
+// let total = 0;
+// for (let i = 0; i < cant; i++) {
+//   total+=userForTest[0].estudios[i].años  
+// }
+// console.log(total);
+
 module.exports = {
+  getProds: function(){
+    return products
+  },
+  
 
   reset: function () {
     // No es necesario modificar esta función.
@@ -107,24 +127,20 @@ module.exports = {
     if(!stars || !text || !user) throw new Error("Faltan parámetros")
     if(stars <1 || stars >5) throw new Error ("Puntaje inválido")
     let product = products.filter(n => n.name=== name)
-    if(!product.length) throw new Error("Producto no encontrado")
-    console.log(product);
-    let prom = 0, cant = product[0].reviews.length
-    console.log("cant " + cant);
-    // for (let i = 0; i < cant; i++) {
-    //   prom+= product.reviews[i].parseInt(stars)     
-    //   console.log("stars" + prom);
-    // }
-    //if (!cant===0) prom = (prom/cant)
-    if (!cant===0) prom = (parseInt(stars)/cant) 
-    console.log("total prom " + prom);
+    if(!product.length) throw new Error("Producto no encontrado")    
     const NewReviev ={
       stars: stars, 
       text: text, 
       user: user
     }    
     product[0].reviews.push(NewReviev)   
-    product[0].rating = stars
+    let sum = 0, prom = 0;
+    let cant = (product[0].reviews.length);   
+    for (let x = 0; x < cant; x++) {
+      sum+=product[0].reviews[x].stars      
+    }    
+    prom = (sum/cant)   
+    product[0].rating = prom
     return "Reseña agregada correctamente"
   },
 
@@ -147,13 +163,20 @@ module.exports = {
       products.forEach(rating => {
         ratingArr.push(rating)
       });
-      const bestRated = products.rating.sort()
-      for (let i = 0; i < 4; i++) {
+      const bestRated = ratingArr.sort()
+      let bestRatedNames = []
+      for (let i = 0; i < 5; i++) {
+          bestRatedNames.push(bestRated[i].name)
       }
+      // console.log(bestRated);
+      // console.log(bestRatedNames);
+      return bestRatedNames
     }
     let rating = products.filter(n => n.name===name)
     if(!rating.length) throw new Error('Producto no encontrado')
     return rating[0].rating
   }
+
+
 
 }
