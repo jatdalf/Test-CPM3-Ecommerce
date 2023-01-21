@@ -14,3 +14,5 @@ const models = require("../models/model");
 // escriban sus rutas acá
 // siéntanse libres de dividir entre archivos si lo necesitan
 
+const { Router } = require('express')
+const {listCategories, addCategory} = require("../models/model.js")
